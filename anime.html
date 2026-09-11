@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Anime — ToonFlix Hindi Dub</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">T</span><span>ToonFlix <b>Hindi Dub</b></span></a><div class="nav"><a href="index.html">Home</a><a href="index.html#all">Anime</a></div></header>
+<main><div id="loading" class="loading">Loading anime...</div>
+<section id="animePage" class="anime-page hidden">
+  <a href="index.html" class="back">← Back to library</a>
+  <div class="details">
+    <img id="poster" class="detail-poster" alt="">
+    <div><span class="eyebrow">ANIME DETAILS</span><h1 id="title"></h1><div id="meta" class="meta"></div><p id="synopsis"></p></div>
+  </div>
+  <section class="player-card"><div class="player-head"><div><span class="eyebrow">STREAM</span><h2 id="playing">Select an episode</h2></div></div>
+    <div id="player" class="player"><div class="player-placeholder">▶<small>Select an episode below</small></div></div>
+    <div class="episodes-head"><h3>Episodes</h3><span id="epCount"></span></div><div id="episodes" class="episodes"></div>
+  </section>
+  <section><div class="section-head"><div><span class="eyebrow">MORE</span><h2>You may also like</h2></div></div><div id="related" class="anime-grid"></div></section>
+</section>
+</main><footer>© <span id="year"></span> ToonFlix Hindi Dub</footer>
+<script src="config.js"></script><script src="anime.js"></script></body></html>

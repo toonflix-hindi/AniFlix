@@ -1,0 +1,9 @@
+const DB=window.TOONFLIX_CONFIG.FIREBASE_DB_URL.replace(/\/$/,'');
+let library=[];
+const $=id=>document.getElementById(id);
+async function getAnime(){const r=await fetch(DB+'/anime.json'); if(!r.ok) throw Error('Firebase read failed'); const d=await r.json(); return d?Object.entries(d).map(([id,v])=>({id,...v})):[]}
+function card(a){const title=a.title||'Untitled';return `<article class="anime-card" onclick="location.href='anime.html?id=${encodeURIComponent(a.id)}'"><div class="poster">${a.poster?`<img src="${esc(a.poster)}" loading="lazy" alt="">`:''}<span class="badge">${esc(a.subDub||'Hindi Dub')}</span></div><h3>${esc(title)}</h3><div class="card-meta">${esc(a.genre||'Anime')} · ${a.year||'—'} · ★ ${a.rating||'—'}</div></article>`}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function render(list,id){$(id).innerHTML=list.map(card).join('')||''}
+async function init(){try{library=await getAnime();library.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));render(library.slice(0,6),'latestGrid');render(library,'animeGrid');$('latestCount').textContent=`${library.length} title${library.length===1?'':'s'}`;$('search').oninput=e=>{const q=e.target.value.toLowerCase();const f=library.filter(a=>(a.title||'').toLowerCase().includes(q)||(a.genre||'').toLowerCase().includes(q));render(f,'animeGrid');$('empty').classList.toggle('hidden',!!f.length)}}catch(e){$('animeGrid').innerHTML='<div class="empty">Could not load the library. Check Firebase database rules.</div>'}}
+$('year').textContent=new Date().getFullYear();init();

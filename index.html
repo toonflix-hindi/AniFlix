@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ToonFlix Hindi Dub</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">T</span><span>ToonFlix <b>Hindi Dub</b></span></a>
+  <div class="nav">
+    <a href="index.html" class="active">Home</a><a href="#latest">Latest</a><a href="#all">Anime</a>
+    <a class="admin-link" href="admin.html">Admin</a>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div><span class="eyebrow">TOONFLIX HINDI DUB</span><h1>Watch your favourite anime.<br><em>Hindi dubbed.</em></h1>
+  <p>A clean, fast anime library powered by Firebase. Open a title to browse episodes and start streaming.</p>
+  <a class="hero-btn" href="#all">Explore Anime <span>→</span></a></div>
+</section>
+
+<section class="section" id="latest"><div class="section-head"><div><span class="eyebrow">UPDATED</span><h2>Latest Anime</h2></div><span id="latestCount" class="muted"></span></div><div id="latestGrid" class="anime-grid"></div></section>
+<section class="section" id="all"><div class="section-head"><div><span class="eyebrow">LIBRARY</span><h2>All Anime</h2></div><input id="search" class="search" placeholder="Search anime..."></div><div id="animeGrid" class="anime-grid"></div><div id="empty" class="empty hidden">No anime found.</div></section>
+</main>
+<footer>© <span id="year"></span> ToonFlix Hindi Dub · Built for GitHub Pages</footer>
+<script src="config.js"></script><script src="script.js"></script>
+</body></html>
