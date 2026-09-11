@@ -1,0 +1,2240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ToonFlix Hindi Dub — Admin Panel</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #090b10;
+      color: #f5f5f5;
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    /* =========================
+       LOGIN SCREEN
+    ========================== */
+
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background:
+        radial-gradient(circle at top, #202638 0%, #090b10 48%);
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+      background: #11151f;
+      border: 1px solid #272d3b;
+      border-radius: 18px;
+      padding: 32px 25px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 27px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .logo span {
+      color: #8b5cf6;
+    }
+
+    .login-subtitle {
+      text-align: center;
+      color: #9299a8;
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      color: #b5bccb;
+      margin-bottom: 7px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      background: #0b0e14;
+      border: 1px solid #2a3040;
+      color: #fff;
+      border-radius: 10px;
+      padding: 12px 13px;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #8b5cf6;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .login-btn,
+    .primary-btn {
+      width: 100%;
+      border: 0;
+      border-radius: 10px;
+      padding: 13px;
+      background: #8b5cf6;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .login-btn:hover,
+    .primary-btn:hover {
+      background: #7444df;
+      transform: translateY(-1px);
+    }
+
+    .error {
+      color: #ff6b81;
+      text-align: center;
+      font-size: 13px;
+      margin-top: 13px;
+      min-height: 18px;
+    }
+
+    /* =========================
+       ADMIN APP
+    ========================== */
+
+    #adminApp {
+      display: none;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(9,11,16,.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #202532;
+      padding: 15px 20px;
+    }
+
+    .topbar-inner {
+      max-width: 1250px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .brand {
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .brand span {
+      color: #8b5cf6;
+    }
+
+    .logout-btn {
+      border: 1px solid #353b4b;
+      background: #141925;
+      color: #fff;
+      border-radius: 9px;
+      padding: 9px 15px;
+      cursor: pointer;
+    }
+
+    .logout-btn:hover {
+      background: #202638;
+    }
+
+    .container {
+      max-width: 1250px;
+      margin: auto;
+      padding: 25px 20px 50px;
+    }
+
+    .page-title {
+      margin-bottom: 6px;
+      font-size: 28px;
+    }
+
+    .page-desc {
+      color: #858d9e;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: #11151f;
+      border: 1px solid #252b38;
+      border-radius: 15px;
+      padding: 20px;
+    }
+
+    .card.full {
+      grid-column: 1 / -1;
+    }
+
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 17px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .full-field {
+      grid-column: 1 / -1;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 17px;
+      flex-wrap: wrap;
+    }
+
+    .actions button {
+      border: 0;
+      border-radius: 9px;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .save-btn {
+      background: #8b5cf6;
+      color: #fff;
+    }
+
+    .clear-btn {
+      background: #252b38;
+      color: #fff;
+    }
+
+    .danger-btn {
+      background: #351820;
+      color: #ff8b9b;
+    }
+
+    .success-message {
+      color: #63e6a6;
+      font-size: 13px;
+      margin-top: 12px;
+      min-height: 18px;
+    }
+
+    /* =========================
+       ANIME LIST
+    ========================== */
+
+    .anime-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .anime-item {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 12px;
+      border: 1px solid #252b38;
+      background: #0c1017;
+      border-radius: 12px;
+    }
+
+    .anime-poster {
+      width: 60px;
+      height: 80px;
+      border-radius: 7px;
+      object-fit: cover;
+      background: #1a1f2b;
+      flex-shrink: 0;
+    }
+
+    .anime-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .anime-title {
+      font-weight: 700;
+      margin-bottom: 5px;
+      word-break: break-word;
+    }
+
+    .anime-meta {
+      color: #7f8797;
+      font-size: 12px;
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .item-actions button {
+      border: 0;
+      border-radius: 7px;
+      padding: 8px 11px;
+      cursor: pointer;
+      color: #fff;
+      background: #202638;
+    }
+
+    .item-actions .delete {
+      background: #3a1820;
+      color: #ff8b9b;
+    }
+
+    /* =========================
+       EPISODES
+    ========================== */
+
+    #episodeSection {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .selected-anime {
+      color: #a78bfa;
+      margin-bottom: 17px;
+      font-size: 14px;
+    }
+
+    .episode-list {
+      margin-top: 20px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .episode-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #0c1017;
+      border: 1px solid #252b38;
+      padding: 11px;
+      border-radius: 10px;
+    }
+
+    .episode-number {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: #1b2030;
+      color: #a78bfa;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .episode-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .episode-name {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .episode-url {
+      color: #70798b;
+      font-size: 11px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .empty {
+      text-align: center;
+      color: #747c8d;
+      padding: 25px;
+      border: 1px dashed #2c3240;
+      border-radius: 10px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card.full {
+        grid-column: auto;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .full-field {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px 13px 40px;
+      }
+
+      .topbar {
+        padding: 13px;
+      }
+
+      .page-title {
+        font-size: 23px;
+      }
+
+      .anime-item {
+        align-items: flex-start;
+      }
+
+      .item-actions {
+        flex-direction: column;
+      }
+
+      .item-actions button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================================
+       MANUAL PASSWORD SCREEN
+  ========================================== -->
+
+  <section id="loginScreen">
+
+    <div class="login-box">
+
+      <div class="logo">
+        ToonFlix <span>Admin</span>
+      </div>
+
+      <div class="login-subtitle">
+        Enter your admin password to continue
+      </div>
+
+      <div class="input-group">
+        <label for="adminPassword">Admin Password</label>
+
+        <input
+          type="password"
+          id="adminPassword"
+          placeholder="Enter password"
+          autocomplete="off"
+        >
+      </div>
+
+      <button class="login-btn" id="loginBtn">
+        Login to Admin Panel
+      </button>
+
+      <div class="error" id="loginError"></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================
+       ADMIN APPLICATION
+  ========================================== -->
+
+  <section id="adminApp">
+
+    <header class="topbar">
+
+      <div class="topbar-inner">
+
+        <div class="brand">
+          ToonFlix <span>Admin</span>
+        </div>
+
+        <button class="logout-btn" id="logoutBtn">
+          🔒 Lock Panel
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <main class="container">
+
+      <h1 class="page-title">
+        Admin Dashboard
+      </h1>
+
+      <p class="page-desc">
+        Manage anime, information and streaming episodes from one place.
+      </p>
+
+
+      <div class="grid">
+
+        <!-- =====================================
+             ANIME FORM
+        ====================================== -->
+
+        <div class="card">
+
+          <h2 id="animeFormTitle">
+            ➕ Add Anime
+          </h2>
+
+          <form id="animeForm">
+
+            <div class="form-grid">
+
+              <div class="input-group">
+                <label>Anime ID</label>
+                <input
+                  type="text"
+                  id="animeId"
+                  placeholder="e.g. one-piece"
+                  required
+                >
+              </div>
+
+              <div class="input-group">
+                <label>Title</label>
+                <input
+                  type="text"
+                  id="animeTitle"
+                  placeholder="Anime title"
+                  required
+                >
+              </div>
+
+              <div class="input-group full-field">
+                <label>Poster URL</label>
+                <input
+                  type="url"
+                  id="animePoster"
+                  placeholder="https://example.com/poster.jpg"
+                >
+              </div>
+
+              <div class="input-group">
+                <label>Year</label>
+                <input
+                  type="text"
+                  id="animeYear"
+                  placeholder="2026"
+                >
+              </div>
+
+              <div class="input-group">
+                <label>Rating</label>
+                <input
+                  type="text"
+                  id="animeRating"
+                  placeholder="8.5"
+                >
+              </div>
+
+              <div class="input-group">
+                <label>Genre</label>
+                <input
+                  type="text"
+                  id="animeGenre"
+                  placeholder="Action, Adventure"
+                >
+              </div>
+
+              <div class="input-group">
+                <label>Format</label>
+
+                <select id="animeFormat">
+                  <option value="TV">TV</option>
+                  <option value="Movie">Movie</option>
+                  <option value="OVA">OVA</option>
+                  <option value="ONA">ONA</option>
+                  <option value="Special">Special</option>
+                </select>
+
+              </div>
+
+              <div class="input-group">
+                <label>Language / Dub</label>
+
+                <input
+                  type="text"
+                  id="animeSubDub"
+                  placeholder="Hindi Dub / English Sub"
+                >
+
+              </div>
+
+              <div class="input-group full-field">
+
+                <label>Synopsis</label>
+
+                <textarea
+                  id="animeSynopsis"
+                  placeholder="Write anime description..."
+                ></textarea>
+
+              </div>
+
+            </div>
+
+
+            <div class="actions">
+
+              <button
+                type="submit"
+                class="save-btn"
+                id="saveAnimeBtn"
+              >
+                Save Anime
+              </button>
+
+              <button
+                type="button"
+                class="clear-btn"
+                id="clearAnimeBtn"
+              >
+                Clear
+              </button>
+
+            </div>
+
+            <div
+              class="success-message"
+              id="animeMessage"
+            ></div>
+
+          </form>
+
+        </div>
+
+
+        <!-- =====================================
+             ANIME LIST
+        ====================================== -->
+
+        <div class="card">
+
+          <h2>
+            📚 Anime Library
+          </h2>
+
+          <div
+            class="anime-list"
+            id="animeList"
+          >
+            <div class="empty">
+              Loading anime...
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- =====================================
+             EPISODE MANAGEMENT
+        ====================================== -->
+
+        <div
+          class="card full"
+          id="episodeSection"
+        >
+
+          <h2>
+            🎬 Episode Manager
+          </h2>
+
+          <div
+            class="selected-anime"
+            id="selectedAnime"
+          >
+            Select an anime first.
+          </div>
+
+
+          <form id="episodeForm">
+
+            <div class="form-grid">
+
+              <div class="input-group">
+
+                <label>Episode Number</label>
+
+                <input
+                  type="number"
+                  id="episodeNumber"
+                  min="1"
+                  placeholder="1"
+                  required
+                >
+
+              </div>
+
+
+              <div class="input-group">
+
+                <label>Episode Title</label>
+
+                <input
+                  type="text"
+                  id="episodeTitle"
+                  placeholder="Episode 1"
+                >
+
+              </div>
+
+
+              <div class="input-group full-field">
+
+                <label>Streaming URL</label>
+
+                <input
+                  type="url"
+                  id="episodeUrl"
+                  placeholder="https://example.com/video.mp4"
+                  required
+                >
+
+              </div>
+
+            </div>
+
+
+            <div class="actions">
+
+              <button
+                type="submit"
+                class="save-btn"
+                id="saveEpisodeBtn"
+              >
+                Add Episode
+              </button>
+
+              <button
+                type="button"
+                class="clear-btn"
+                id="clearEpisodeBtn"
+              >
+                Clear
+              </button>
+
+            </div>
+
+            <div
+              class="success-message"
+              id="episodeMessage"
+            ></div>
+
+          </form>
+
+
+          <div
+            class="episode-list"
+            id="episodeList"
+          ></div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  </section>
+
+
+  <!-- =========================================
+       CONFIG
+  ========================================== -->
+
+  <script src="config.js"></script>
+
+
+  <script>
+    /*
+      =========================================================
+      TOONFLIX HINDI DUB — MANUAL ADMIN PANEL
+      =========================================================
+
+      Firebase Authentication has intentionally been removed.
+
+      Change this password to whatever you want.
+
+      IMPORTANT:
+      This is a client-side password lock and NOT a secure
+      authentication system.
+    */
+
+    const ADMIN_PASSWORD = "ToonFlix@2026";
+
+
+    /* =========================================
+       FIREBASE DATABASE CONFIG
+    ========================================== */
+
+    const DB_URL =
+      (
+        window.TOONFLIX_CONFIG &&
+        window.TOONFLIX_CONFIG.FIREBASE_DB_URL
+      )
+      ? window.TOONFLIX_CONFIG.FIREBASE_DB_URL.replace(/\/$/, "")
+      : "";
+
+
+    /* =========================================
+       GLOBAL STATE
+    ========================================== */
+
+    let animeData = {};
+
+    let editingAnimeId = null;
+
+    let selectedAnimeId = null;
+
+    let editingEpisodeNumber = null;
+
+
+    /* =========================================
+       ELEMENTS
+    ========================================== */
+
+    const loginScreen =
+      document.getElementById("loginScreen");
+
+    const adminApp =
+      document.getElementById("adminApp");
+
+    const adminPassword =
+      document.getElementById("adminPassword");
+
+    const loginBtn =
+      document.getElementById("loginBtn");
+
+    const loginError =
+      document.getElementById("loginError");
+
+    const logoutBtn =
+      document.getElementById("logoutBtn");
+
+    const animeForm =
+      document.getElementById("animeForm");
+
+    const animeList =
+      document.getElementById("animeList");
+
+    const episodeSection =
+      document.getElementById("episodeSection");
+
+    const episodeList =
+      document.getElementById("episodeList");
+
+
+    /* =========================================
+       MANUAL LOGIN
+    ========================================== */
+
+    function isLoggedIn() {
+      return sessionStorage.getItem("toonflix_admin") === "true";
+    }
+
+
+    function showAdminPanel() {
+
+      loginScreen.style.display = "none";
+
+      adminApp.style.display = "block";
+
+      loadAnime();
+
+    }
+
+
+    function showLogin() {
+
+      adminApp.style.display = "none";
+
+      loginScreen.style.display = "flex";
+
+      adminPassword.value = "";
+
+      loginError.textContent = "";
+
+    }
+
+
+    loginBtn.addEventListener("click", () => {
+
+      const password =
+        adminPassword.value;
+
+      if (!password) {
+
+        loginError.textContent =
+          "Please enter your password.";
+
+        return;
+      }
+
+
+      if (password === ADMIN_PASSWORD) {
+
+        sessionStorage.setItem(
+          "toonflix_admin",
+          "true"
+        );
+
+        showAdminPanel();
+
+      } else {
+
+        loginError.textContent =
+          "Incorrect password.";
+
+        adminPassword.value = "";
+
+      }
+
+    });
+
+
+    adminPassword.addEventListener("keydown", (event) => {
+
+      if (event.key === "Enter") {
+
+        loginBtn.click();
+
+      }
+
+    });
+
+
+    logoutBtn.addEventListener("click", () => {
+
+      sessionStorage.removeItem(
+        "toonflix_admin"
+      );
+
+      selectedAnimeId = null;
+
+      showLogin();
+
+    });
+
+
+    /* =========================================
+       FIREBASE REST HELPERS
+    ========================================== */
+
+    function checkDatabase() {
+
+      if (!DB_URL) {
+
+        throw new Error(
+          "Firebase DB URL is missing in config.js"
+        );
+
+      }
+
+    }
+
+
+    async function firebaseGet(path) {
+
+      checkDatabase();
+
+      const response =
+        await fetch(
+          `${DB_URL}/${path}.json`
+        );
+
+      if (!response.ok) {
+
+        throw new Error(
+          `Database request failed: ${response.status}`
+        );
+
+      }
+
+      return await response.json();
+
+    }
+
+
+    async function firebasePut(path, data) {
+
+      checkDatabase();
+
+      const response =
+        await fetch(
+          `${DB_URL}/${path}.json`,
+          {
+            method: "PUT",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(data)
+          }
+        );
+
+
+      if (!response.ok) {
+
+        const errorText =
+          await response.text();
+
+        throw new Error(
+          `Database write failed: ${response.status} ${errorText}`
+        );
+
+      }
+
+      return await response.json();
+
+    }
+
+
+    async function firebasePatch(path, data) {
+
+      checkDatabase();
+
+      const response =
+        await fetch(
+          `${DB_URL}/${path}.json`,
+          {
+            method: "PATCH",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(data)
+          }
+        );
+
+
+      if (!response.ok) {
+
+        const errorText =
+          await response.text();
+
+        throw new Error(
+          `Database update failed: ${response.status} ${errorText}`
+        );
+
+      }
+
+      return await response.json();
+
+    }
+
+
+    async function firebaseDelete(path) {
+
+      checkDatabase();
+
+      const response =
+        await fetch(
+          `${DB_URL}/${path}.json`,
+          {
+            method: "DELETE"
+          }
+        );
+
+
+      if (!response.ok) {
+
+        const errorText =
+          await response.text();
+
+        throw new Error(
+          `Database delete failed: ${response.status} ${errorText}`
+        );
+
+      }
+
+      return true;
+
+    }
+
+
+    /* =========================================
+       LOAD ANIME
+    ========================================== */
+
+    async function loadAnime() {
+
+      animeList.innerHTML =
+        `<div class="empty">Loading anime...</div>`;
+
+
+      try {
+
+        const data =
+          await firebaseGet("anime");
+
+        animeData =
+          data || {};
+
+        renderAnimeList();
+
+      } catch (error) {
+
+        console.error(error);
+
+        animeList.innerHTML =
+          `
+            <div class="empty">
+              Failed to load anime.<br><br>
+              ${escapeHtml(error.message)}
+            </div>
+          `;
+
+      }
+
+    }
+
+
+    /* =========================================
+       RENDER ANIME LIST
+    ========================================== */
+
+    function renderAnimeList() {
+
+      const ids =
+        Object.keys(animeData);
+
+
+      if (!ids.length) {
+
+        animeList.innerHTML =
+          `
+            <div class="empty">
+              No anime added yet.
+            </div>
+          `;
+
+        return;
+
+      }
+
+
+      animeList.innerHTML =
+        ids.map(id => {
+
+          const anime =
+            animeData[id] || {};
+
+          const poster =
+            anime.poster || "";
+
+          const title =
+            anime.title || id;
+
+          const year =
+            anime.year || "—";
+
+          const genre =
+            anime.genre || "—";
+
+          const episodes =
+            Array.isArray(anime.episodes)
+              ? anime.episodes.length
+              : anime.episodes
+                ? Object.keys(anime.episodes).length
+                : 0;
+
+
+          return `
+            <div class="anime-item">
+
+              <img
+                class="anime-poster"
+                src="${escapeAttribute(poster)}"
+                alt=""
+                onerror="this.style.visibility='hidden'"
+              >
+
+              <div class="anime-info">
+
+                <div class="anime-title">
+                  ${escapeHtml(title)}
+                </div>
+
+                <div class="anime-meta">
+                  ID: ${escapeHtml(id)}
+                  · ${escapeHtml(year)}
+                  · ${escapeHtml(genre)}
+                  · ${episodes} episode(s)
+                </div>
+
+              </div>
+
+
+              <div class="item-actions">
+
+                <button
+                  onclick="selectAnime('${escapeJs(id)}')"
+                >
+                  Episodes
+                </button>
+
+                <button
+                  onclick="editAnime('${escapeJs(id)}')"
+                >
+                  Edit
+                </button>
+
+                <button
+                  class="delete"
+                  onclick="deleteAnime('${escapeJs(id)}')"
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            </div>
+          `;
+
+        }).join("");
+
+    }
+
+
+    /* =========================================
+       ADD / UPDATE ANIME
+    ========================================== */
+
+    animeForm.addEventListener(
+      "submit",
+      async (event) => {
+
+        event.preventDefault();
+
+
+        const id =
+          document.getElementById("animeId")
+          .value
+          .trim();
+
+
+        const title =
+          document.getElementById("animeTitle")
+          .value
+          .trim();
+
+
+        if (!id || !title) {
+
+          showAnimeMessage(
+            "Anime ID and title are required.",
+            true
+          );
+
+          return;
+
+        }
+
+
+        const anime = {
+
+          title: title,
+
+          poster:
+            document.getElementById("animePoster")
+            .value
+            .trim(),
+
+          year:
+            document.getElementById("animeYear")
+            .value
+            .trim(),
+
+          rating:
+            document.getElementById("animeRating")
+            .value
+            .trim(),
+
+          genre:
+            document.getElementById("animeGenre")
+            .value
+            .trim(),
+
+          format:
+            document.getElementById("animeFormat")
+            .value,
+
+          subDub:
+            document.getElementById("animeSubDub")
+            .value
+            .trim(),
+
+          synopsis:
+            document.getElementById("animeSynopsis")
+            .value
+            .trim(),
+
+          episodes:
+            editingAnimeId && animeData[editingAnimeId]
+              ? animeData[editingAnimeId].episodes || []
+              : []
+
+        };
+
+
+        try {
+
+          if (
+            editingAnimeId &&
+            editingAnimeId !== id
+          ) {
+
+            await firebaseDelete(
+              `anime/${encodeURIComponent(editingAnimeId)}`
+            );
+
+          }
+
+
+          await firebasePut(
+            `anime/${encodeURIComponent(id)}`,
+            anime
+          );
+
+
+          showAnimeMessage(
+            editingAnimeId
+              ? "Anime updated successfully."
+              : "Anime added successfully."
+          );
+
+
+          editingAnimeId = null;
+
+          document.getElementById(
+            "animeFormTitle"
+          ).textContent = "➕ Add Anime";
+
+
+          document.getElementById(
+            "saveAnimeBtn"
+          ).textContent = "Save Anime";
+
+
+          animeForm.reset();
+
+
+          await loadAnime();
+
+
+          if (selectedAnimeId === id) {
+
+            selectAnime(id);
+
+          }
+
+
+        } catch (error) {
+
+          console.error(error);
+
+          showAnimeMessage(
+            error.message,
+            true
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =========================================
+       EDIT ANIME
+    ========================================== */
+
+    window.editAnime = function(id) {
+
+      const anime =
+        animeData[id];
+
+      if (!anime) return;
+
+
+      editingAnimeId = id;
+
+
+      document.getElementById(
+        "animeFormTitle"
+      ).textContent = "✏️ Edit Anime";
+
+
+      document.getElementById(
+        "saveAnimeBtn"
+      ).textContent = "Update Anime";
+
+
+      document.getElementById(
+        "animeId"
+      ).value = id;
+
+
+      document.getElementById(
+        "animeTitle"
+      ).value = anime.title || "";
+
+
+      document.getElementById(
+        "animePoster"
+      ).value = anime.poster || "";
+
+
+      document.getElementById(
+        "animeYear"
+      ).value = anime.year || "";
+
+
+      document.getElementById(
+        "animeRating"
+      ).value = anime.rating || "";
+
+
+      document.getElementById(
+        "animeGenre"
+      ).value = anime.genre || "";
+
+
+      document.getElementById(
+        "animeFormat"
+      ).value = anime.format || "TV";
+
+
+      document.getElementById(
+        "animeSubDub"
+      ).value = anime.subDub || "";
+
+
+      document.getElementById(
+        "animeSynopsis"
+      ).value = anime.synopsis || "";
+
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    };
+
+
+    /* =========================================
+       DELETE ANIME
+    ========================================== */
+
+    window.deleteAnime = async function(id) {
+
+      const anime =
+        animeData[id];
+
+      const title =
+        anime && anime.title
+          ? anime.title
+          : id;
+
+
+      const confirmed =
+        confirm(
+          `Delete "${title}" and all its episodes?`
+        );
+
+
+      if (!confirmed) return;
+
+
+      try {
+
+        await firebaseDelete(
+          `anime/${encodeURIComponent(id)}`
+        );
+
+
+        if (selectedAnimeId === id) {
+
+          selectedAnimeId = null;
+
+          episodeSection.style.display =
+            "none";
+
+        }
+
+
+        if (editingAnimeId === id) {
+
+          clearAnimeForm();
+
+        }
+
+
+        await loadAnime();
+
+      } catch (error) {
+
+        alert(
+          "Delete failed:\n\n" +
+          error.message
+        );
+
+      }
+
+    };
+
+
+    /* =========================================
+       CLEAR ANIME FORM
+    ========================================== */
+
+    function clearAnimeForm() {
+
+      editingAnimeId = null;
+
+      animeForm.reset();
+
+
+      document.getElementById(
+        "animeFormTitle"
+      ).textContent = "➕ Add Anime";
+
+
+      document.getElementById(
+        "saveAnimeBtn"
+      ).textContent = "Save Anime";
+
+
+      showAnimeMessage("");
+
+    }
+
+
+    document.getElementById(
+      "clearAnimeBtn"
+    ).addEventListener(
+      "click",
+      clearAnimeForm
+    );
+
+
+    /* =========================================
+       SELECT ANIME / EPISODES
+    ========================================== */
+
+    window.selectAnime = function(id) {
+
+      const anime =
+        animeData[id];
+
+      if (!anime) return;
+
+
+      selectedAnimeId = id;
+
+      editingEpisodeNumber = null;
+
+
+      episodeSection.style.display =
+        "block";
+
+
+      document.getElementById(
+        "selectedAnime"
+      ).innerHTML =
+        `
+          Managing episodes for:
+          <strong>${escapeHtml(
+            anime.title || id
+          )}</strong>
+          <br>
+          <small>ID: ${escapeHtml(id)}</small>
+        `;
+
+
+      clearEpisodeForm();
+
+      renderEpisodes();
+
+
+      episodeSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    };
+
+
+    /* =========================================
+       NORMALIZE EPISODES
+    ========================================== */
+
+    function getEpisodes(anime) {
+
+      if (!anime) return [];
+
+
+      if (Array.isArray(anime.episodes)) {
+
+        return anime.episodes;
+
+      }
+
+
+      if (
+        anime.episodes &&
+        typeof anime.episodes === "object"
+      ) {
+
+        return Object.keys(anime.episodes)
+          .map(key => {
+
+            const episode =
+              anime.episodes[key];
+
+            return {
+              number:
+                episode.number || key,
+
+              title:
+                episode.title ||
+                `Episode ${key}`,
+
+              url:
+                episode.url ||
+                episode.streamUrl ||
+                ""
+
+            };
+
+          });
+
+      }
+
+
+      return [];
+
+    }
+
+
+    /* =========================================
+       RENDER EPISODES
+    ========================================== */
+
+    function renderEpisodes() {
+
+      if (!selectedAnimeId) {
+
+        episodeList.innerHTML = "";
+
+        return;
+
+      }
+
+
+      const anime =
+        animeData[selectedAnimeId];
+
+
+      const episodes =
+        getEpisodes(anime);
+
+
+      if (!episodes.length) {
+
+        episodeList.innerHTML =
+          `
+            <div class="empty">
+              No episodes added yet.
+            </div>
+          `;
+
+        return;
+
+      }
+
+
+      episodes.sort(
+        (a, b) =>
+          Number(a.number || 0) -
+          Number(b.number || 0)
+      );
+
+
+      episodeList.innerHTML =
+        episodes.map((episode, index) => {
+
+          const number =
+            episode.number || index + 1;
+
+          const title =
+            episode.title ||
+            `Episode ${number}`;
+
+          const url =
+            episode.url ||
+            episode.streamUrl ||
+            "";
+
+
+          return `
+            <div class="episode-item">
+
+              <div class="episode-number">
+                ${escapeHtml(String(number))}
+              </div>
+
+              <div class="episode-info">
+
+                <div class="episode-name">
+                  ${escapeHtml(title)}
+                </div>
+
+                <div class="episode-url">
+                  ${escapeHtml(url)}
+                </div>
+
+              </div>
+
+              <div class="item-actions">
+
+                <button
+                  onclick="editEpisode(${Number(number)})"
+                >
+                  Edit
+                </button>
+
+                <button
+                  class="delete"
+                  onclick="deleteEpisode(${Number(number)})"
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            </div>
+          `;
+
+        }).join("");
+
+    }
+
+
+    /* =========================================
+       ADD / UPDATE EPISODE
+    ========================================== */
+
+    document.getElementById(
+      "episodeForm"
+    ).addEventListener(
+      "submit",
+      async (event) => {
+
+        event.preventDefault();
+
+
+        if (!selectedAnimeId) {
+
+          showEpisodeMessage(
+            "Select an anime first.",
+            true
+          );
+
+          return;
+
+        }
+
+
+        const number =
+          Number(
+            document.getElementById(
+              "episodeNumber"
+            ).value
+          );
+
+
+        const title =
+          document.getElementById(
+            "episodeTitle"
+          ).value.trim();
+
+
+        const url =
+          document.getElementById(
+            "episodeUrl"
+          ).value.trim();
+
+
+        if (!number || !url) {
+
+          showEpisodeMessage(
+            "Episode number and URL are required.",
+            true
+          );
+
+          return;
+
+        }
+
+
+        const anime =
+          animeData[selectedAnimeId];
+
+
+        let episodes =
+          getEpisodes(anime);
+
+
+        if (
+          editingEpisodeNumber !== null &&
+          editingEpisodeNumber !== number
+        ) {
+
+          episodes =
+            episodes.filter(
+              episode =>
+                Number(episode.number) !==
+                Number(editingEpisodeNumber)
+            );
+
+        }
+
+
+        const existingIndex =
+          episodes.findIndex(
+            episode =>
+              Number(episode.number) ===
+              Number(number)
+          );
+
+
+        const episode = {
+
+          number: number,
+
+          title:
+            title || `Episode ${number}`,
+
+          url: url
+
+        };
+
+
+        if (existingIndex >= 0) {
+
+          episodes[existingIndex] =
+            episode;
+
+        } else {
+
+          episodes.push(episode);
+
+        }
+
+
+        episodes.sort(
+          (a, b) =>
+            Number(a.number) -
+            Number(b.number)
+        );
+
+
+        try {
+
+          await firebasePut(
+            `anime/${encodeURIComponent(selectedAnimeId)}/episodes`,
+            episodes
+          );
+
+
+          animeData[selectedAnimeId].episodes =
+            episodes;
+
+
+          showEpisodeMessage(
+            editingEpisodeNumber !== null
+              ? "Episode updated successfully."
+              : "Episode added successfully."
+          );
+
+
+          editingEpisodeNumber = null;
+
+          clearEpisodeForm(false);
+
+          renderEpisodes();
+
+
+          document.getElementById(
+            "saveEpisodeBtn"
+          ).textContent = "Add Episode";
+
+
+        } catch (error) {
+
+          console.error(error);
+
+          showEpisodeMessage(
+            error.message,
+            true
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =========================================
+       EDIT EPISODE
+    ========================================== */
+
+    window.editEpisode = function(number) {
+
+      if (!selectedAnimeId) return;
+
+
+      const anime =
+        animeData[selectedAnimeId];
+
+
+      const episodes =
+        getEpisodes(anime);
+
+
+      const episode =
+        episodes.find(
+          item =>
+            Number(item.number) ===
+            Number(number)
+        );
+
+
+      if (!episode) return;
+
+
+      editingEpisodeNumber =
+        Number(number);
+
+
+      document.getElementById(
+        "episodeNumber"
+      ).value =
+        episode.number;
+
+
+      document.getElementById(
+        "episodeTitle"
+      ).value =
+        episode.title || "";
+
+
+      document.getElementById(
+        "episodeUrl"
+      ).value =
+        episode.url ||
+        episode.streamUrl ||
+        "";
+
+
+      document.getElementById(
+        "saveEpisodeBtn"
+      ).textContent =
+        "Update Episode";
+
+
+      document.getElementById(
+        "episodeForm"
+      ).scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+    };
+
+
+    /* =========================================
+       DELETE EPISODE
+    ========================================== */
+
+    window.deleteEpisode = async function(number) {
+
+      if (!selectedAnimeId) return;
+
+
+      const anime =
+        animeData[selectedAnimeId];
+
+
+      let episodes =
+        getEpisodes(anime);
+
+
+      const episode =
+        episodes.find(
+          item =>
+            Number(item.number) ===
+            Number(number)
+        );
+
+
+      const title =
+        episode
+          ? episode.title
+          : `Episode ${number}`;
+
+
+      const confirmed =
+        confirm(
+          `Delete "${title}"?`
+        );
+
+
+      if (!confirmed) return;
+
+
+      episodes =
+        episodes.filter(
+          item =>
+            Number(item.number) !==
+            Number(number)
+        );
+
+
+      try {
+
+        await firebasePut(
+          `anime/${encodeURIComponent(selectedAnimeId)}/episodes`,
+          episodes
+        );
+
+
+        animeData[selectedAnimeId].episodes =
+          episodes;
+
+
+        renderEpisodes();
+
+
+        showEpisodeMessage(
+          "Episode deleted successfully."
+        );
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        showEpisodeMessage(
+          error.message,
+          true
+        );
+
+      }
+
+    };
+
+
+    /* =========================================
+       CLEAR EPISODE FORM
+    ========================================== */
+
+    function clearEpisodeForm(
+      resetMessage = true
+    ) {
+
+      editingEpisodeNumber = null;
+
+
+      document.getElementById(
+        "episodeForm"
+      ).reset();
+
+
+      document.getElementById(
+        "saveEpisodeBtn"
+      ).textContent =
+        "Add Episode";
+
+
+      if (resetMessage) {
+
+        showEpisodeMessage("");
+
+      }
+
+    }
+
+
+    document.getElementById(
+      "clearEpisodeBtn"
+    ).addEventListener(
+      "click",
+      () => clearEpisodeForm()
+    );
+
+
+    /* =========================================
+       MESSAGES
+    ========================================== */
+
+    function showAnimeMessage(
+      message,
+      isError = false
+    ) {
+
+      const element =
+        document.getElementById(
+          "animeMessage"
+        );
+
+
+      element.textContent =
+        message;
+
+
+      element.style.color =
+        isError
+          ? "#ff6b81"
+          : "#63e6a6";
+
+    }
+
+
+    function showEpisodeMessage(
+      message,
+      isError = false
+    ) {
+
+      const element =
+        document.getElementById(
+          "episodeMessage"
+        );
+
+
+      element.textContent =
+        message;
+
+
+      element.style.color =
+        isError
+          ? "#ff6b81"
+          : "#63e6a6";
+
+    }
+
+
+    /* =========================================
+       SECURITY / HTML HELPERS
+    ========================================== */
+
+    function escapeHtml(value) {
+
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    function escapeAttribute(value) {
+
+      return escapeHtml(value);
+
+    }
+
+
+    function escapeJs(value) {
+
+      return String(value ?? "")
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '\\"')
+        .replace(/\n/g, "\\n")
+        .replace(/\r/g, "\\r");
+
+    }
+
+
+    /* =========================================
+       INITIAL STATE
+    ========================================== */
+
+    if (isLoggedIn()) {
+
+      showAdminPanel();
+
+    } else {
+
+      showLogin();
+
+    }
+
+  </script>
+
+</body>
+</html>
